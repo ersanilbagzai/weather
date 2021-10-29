@@ -1,6 +1,18 @@
 package com.in.weather.rule.enums;
 
+/**
+ * The Enum Operation.
+ */
 public enum Operation {
 
-	eq, gt, gte, lt, lte;
+	/** The eq. */
+	eq,
+	/** The gt. */
+	gt,
+	/** The gte. */
+	gte,
+	/** The lt. */
+	lt,
+	/** The lte. */
+	lte;
 }

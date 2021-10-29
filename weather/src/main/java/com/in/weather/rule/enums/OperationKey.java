@@ -1,6 +1,14 @@
 package com.in.weather.rule.enums;
 
+/**
+ * The Enum OperationKey.
+ */
 public enum OperationKey {
 
-	MAX_TEMP, MIN_TEMP, WIND_SPEED;
+	/** The max temp. */
+	MAX_TEMP,
+	/** The min temp. */
+	MIN_TEMP,
+	/** The wind speed. */
+	WIND_SPEED;
 }

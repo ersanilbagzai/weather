@@ -1,11 +1,21 @@
 package com.in.weather.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.in.weather.parser.exception.ParseDataException;
 import com.in.weather.wrapper.main.WeatherData;
 
+/**
+ * The Interface IWeatherParser.
+ */
 public interface IWeatherParser {
 
-	WeatherData parse(String parseType, String data) throws JsonMappingException, JsonProcessingException;
+	/**
+	 * Parses the.
+	 *
+	 * @param parseType the parse type
+	 * @param data      the data
+	 * @return the weather data
+	 * @throws ParseDataException the parse data exception
+	 */
+	WeatherData parse(String parseType, String data) throws ParseDataException;
 
 }

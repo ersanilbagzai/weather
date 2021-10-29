@@ -2,12 +2,20 @@ package com.in.weather.rule.service;
 
 import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.in.weather.parser.exception.ParseDataException;
 import com.in.weather.rule.wrapper.Rule;
 
+/**
+ * The Interface IRuleService.
+ */
 public interface IRuleService {
 
-	List<Rule> getRules() throws JsonMappingException, JsonProcessingException;
+	/**
+	 * Gets the rules.
+	 *
+	 * @return the rules
+	 * @throws ParseDataException the parse data exception
+	 */
+	List<Rule> getRules() throws ParseDataException;
 
 }

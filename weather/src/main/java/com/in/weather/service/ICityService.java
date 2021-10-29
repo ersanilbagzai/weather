@@ -1,9 +1,19 @@
 package com.in.weather.service;
 
-import java.io.IOException;
 import java.util.List;
 
+import com.in.weather.parser.exception.ParseDataException;
+
+/**
+ * The Interface ICityService.
+ */
 public interface ICityService {
 
-	public List<String> getCitys() throws IOException;
+	/**
+	 * Gets the citys.
+	 *
+	 * @return the citys
+	 * @throws ParseDataException the parse data exception
+	 */
+	public List<String> getCitys() throws ParseDataException;
 }

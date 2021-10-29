@@ -1,9 +1,10 @@
 <html>
    <head>
+	<script src="js/constants.js" ></script>
       <script type="text/javascript">
 
       	function fetchDataAndUpdateCityDropDown(){
-      		fetch('http://localhost:8080/city/detail', {
+      		fetch(baseUrl + 'city/detail', {
 		         method: 'GET', // or 'PUT'
 		         //mode: 'no-cors',
 		         headers: {
@@ -12,12 +13,23 @@
 		          //'Access-Control-Allow-Credentials': 'false',
 		         },
 	         })
-	         .then(response => response.json())
+	         .then(response => {
+				if(response.status == 200){
+                    return response.json();
+                }else{
+                    return "Failure";
+                }
+			 })
 	         .then(data => {
-	         	updateCityDropDown(data);
+				 if(data == 'Failure'){
+					alert('Link Is Broken Please Try Again In Some Time');
+				 }else{
+					updateCityDropDown(data);
+				 }
 	         })
 	         .catch((error) => {
 	         	console.error('Error:', error);
+				alert('Link Is Broken Please Try Again In Some Time');
 	         });
       	}
 
@@ -52,7 +64,7 @@
          
          function getddl(){
          
-	         let url = "http://localhost:8080/weather/detail?city=" + formid.ddlselect[formid.ddlselect.selectedIndex].text;
+	         let url = baseUrl + "weather/detail?city=" + formid.ddlselect[formid.ddlselect.selectedIndex].text;
 	         console.log("url : " + url)
 	         
 	         let value = fetchAndUpdateData(url)
@@ -73,12 +85,23 @@
 		          //'Access-Control-Allow-Credentials': 'false',
 		         },
 	         })
-	         .then(response => response.json())
+	         .then(response => {
+				if(response.status == 200){
+                    return response.json();
+                }else{
+                    return "Failure";
+                }
+			 })
 	         .then(data => {
-	         	updateDataInTable(data);
+				if(data == 'Failure'){
+					alert('Link Is Broken Please Try Again In Some Time');
+				 }else{
+					updateDataInTable(data);
+				}
 	         })
 	         .catch((error) => {
 	         	console.error('Error:', error);
+				 alert('Link Is Broken Please Try Again In Some Time');
 	         });
          
          }
@@ -96,6 +119,7 @@
 	                      <th>Wind Speed</th>
 	                      <th>Description</th>
 	                      <th>Suggestion</th>
+						  <th>Options</th>
 	                  </tr>
 	              </thead>
 	              <tbody>`;
@@ -112,10 +136,17 @@
 		                      <td>${weatherinfo.tempMax}</td>
 		                      <td>${cValue.wind.speed}</td>
 		                      <td>${cValue.weather[0].description}</td>
-		                      <td>${weatherinfo.suggestion}</td>     
+		                      <td>${weatherinfo.suggestion}</td>
+							  <td>
+							
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="createAndSetChartUrl('${data.city.name}','${cValue.date}')">
+									Details
+  								</button>
+								
+							  </td>     
 		                  </tr>`;
 		                  tableHtml = tableHtml + row;
-	         });
+	         },data);
 	         
 	         let tableEndHtml = `</tbody>
 	          </table>
@@ -128,11 +159,21 @@
          }
          
           
+		//  function createAndSetChartUrl(url){
+		// 	 console.log(url);
+		// 	 localStorage.url = url;
+		//  }
          
       </script>
+	  <script src="https://code.highcharts.com/highcharts.js"></script>
+	  <script src="https://code.highcharts.com/modules/series-label.js"></script>
+	  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+	  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+	  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
       <!-- Latest compiled and minified CSS -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
       <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
+	  <link rel="stylesheet" href="css/chart.css">
    </head>
    <body>
       <div class="container mb-3 mt-3">
@@ -154,13 +195,80 @@
          </content> -->
       </div>
       <div id="lblmess"></div>
+
+
+	 <!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="createAndSetChartUrl('new')">
+	Launch demo modal
+  </button> -->
+
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLabel">Hourly Temperature Chart</h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="modal-body">
+		  
+			<figure class="highcharts-figure w-100">
+				<div id="container"></div>
+				<p class="highcharts-description">
+				  
+				</p>
+			  </figure>
+
+		</div>
+	  </div>
+	</div>
+  </div>
+
+  <!-- <td><a href="chart.html" class="btn btn-info" role="button" onclick="createAndSetChartUrl('${data.city.name}','${date}')">Details</a></td> -->
+
+
       <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
       <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
       <script src="https://cdn.datatables.net/1.11.3/js/dataTables.bootstrap4.min.js" ></script>
-      <!-- <script type="text/javascript">
-         getddl()
-      </script> -->
+      <script type="text/javascript">
+          function createAndSetChartUrl(city, date){
+			fetch(baseUrl + 'weather/detail/qhourly?city=' + city + "&date=" + date, {
+		         method: 'GET', // or 'PUT'
+		         //mode: 'no-cors',
+		         headers: {
+		          'Content-Type': 'application/json',
+		          'Access-Control-Allow-Origin': '*',
+		          //'Access-Control-Allow-Credentials': 'false',
+		         },
+	         })
+	         .then(response => {
+				if(response.status == 200){
+                    return response.json();
+                }else{
+                    return "Failure";
+                }
+			 })
+	         .then(data => {
+				 if(data == 'Failure'){
+					alert('Link Is Broken Please Try Again In Some Time');
+				 }else{
+					updateChart(data);
+				 }
+	         })
+	         .catch((error) => {
+	         	console.error('Error:', error);
+				alert('Link Is Broken Please Try Again In Some Time');
+	         });
+		 }
+      </script>
+	  <script src="js/chart.js" ></script>
+	  <script>
+		 // updateChart();
+		  //console.log(localStorage.url)
+		  //console.log(localStorage.date)
+	  </script>
    </body>
 </html>
