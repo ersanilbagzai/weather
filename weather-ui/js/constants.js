@@ -1,1 +1,0 @@
-let baseUrl = 'http://localhost:9006/weather/rest/';

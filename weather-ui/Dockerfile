@@ -1,7 +1,13 @@
-FROM nginx
-
-COPY index.html /usr/share/nginx/html
-
-RUN mkdir -p /usr/share/nginx/html/js
-
-COPY js /usr/share/nginx/html/js/
+# Stage 1
+FROM node:16-alpine3.12 as build-step
+RUN mkdir -p /app
+WORKDIR /app
+COPY package.json /app
+RUN npm install
+COPY . /app
+RUN npm run build --prod
+# Stage 2
+FROM nginx:1.17.1-alpine
+COPY --from=build-step /app/dist/sample-ui /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
