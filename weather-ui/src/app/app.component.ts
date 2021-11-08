@@ -103,7 +103,7 @@ export class AppComponent implements OnInit {
     { field: 'Description', filter: 'agTextColumnFilter'},
     { field: 'Suggestion', filter: 'agTextColumnFilter'},
     { field: 'City', hide: true},
-    {headerName: '', field: 'icon', cellRenderer: 'options', pinned: 'right'}
+    {headerName: '', field: 'icon', cellRenderer: 'options', pinned: 'right', width: 80}
 ];
 
 rowData = [
