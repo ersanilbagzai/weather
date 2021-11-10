@@ -2,6 +2,8 @@ package com.in.weather.rest.impl;
 
 import java.text.ParseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
@@ -28,6 +30,8 @@ import com.in.weather.service.exceptions.ParamTypeNotValidException;
 @CrossOrigin
 public class WeatherRestImpl implements IWeatherRest {
 
+	Logger logger = LoggerFactory.getLogger(WeatherRestImpl.class);
+	
 	/** The i weather service. */
 	@Autowired
 	private IWeatherService iWeatherService;
@@ -52,6 +56,9 @@ public class WeatherRestImpl implements IWeatherRest {
 	@Override
 	public ResponseEntity<Object> weatherDetail(String city) throws ParseDataException, ParseException,
 			RuleOperationKeyNotValidException, RuleOperationNotValidException, ParamTypeNotValidException {
+		logger.info(
+				"In Methhod : weatherDetail, Calling service : iWeatherService.getWeatherDetail with param : city - "
+						+ city);
 		return new ResponseEntity(iWeatherService.getWeatherDetail(city), HttpStatus.OK);
 	}
 

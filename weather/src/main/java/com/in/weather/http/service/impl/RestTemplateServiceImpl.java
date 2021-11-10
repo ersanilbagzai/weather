@@ -1,5 +1,7 @@
 package com.in.weather.http.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -17,6 +19,8 @@ import com.in.weather.utils.WeatherConstants;
 @Service
 public class RestTemplateServiceImpl implements IRestTemplateService {
 
+	Logger logger = LoggerFactory.getLogger(RestTemplateServiceImpl.class);
+			
 	/** The rest template. */
 	private final RestTemplate restTemplate;
 
@@ -50,12 +54,14 @@ public class RestTemplateServiceImpl implements IRestTemplateService {
 	 * @throws ParamTypeNotValidException the param type not valid exception
 	 */
 	@Override
-	public String getPostsPlainJSON(String baseUrl, MultiValueMap<String, String> pararms, String paramType)
+	public String getPostsPlainJSON(String baseUrl, MultiValueMap<String, String> params, String paramType)
 			throws ParamTypeNotValidException {
+		logger.trace("Calling Rest : baseUrl - " + baseUrl + " params - " + params + " paramType - " + paramType);
 		if (paramType.equalsIgnoreCase(WeatherConstants.PARAM_TYPE_QUERY)) {
-			UriComponents build = UriComponentsBuilder.fromHttpUrl(baseUrl).queryParams(pararms).build();
-			return this.restTemplate.getForObject(build.toUriString(), String.class);
+			UriComponents build = UriComponentsBuilder.fromHttpUrl(baseUrl).queryParams(params).build();
+			return restTemplate.getForObject(build.toUriString(), String.class);
 		} else {
+			logger.error("ParamTypeNotValidException in getPostsPlainJSON");
 			throw new ParamTypeNotValidException();
 		}
 	}

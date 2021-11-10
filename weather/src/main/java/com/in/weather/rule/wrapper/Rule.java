@@ -1,5 +1,8 @@
 package com.in.weather.rule.wrapper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.in.weather.rule.enums.Operation;
 import com.in.weather.rule.enums.OperationKey;
 

@@ -1,5 +1,7 @@
 package com.in.weather.rest.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
@@ -22,18 +24,23 @@ import com.in.weather.service.ICityService;
 @CrossOrigin
 public class CityRestImpl implements IcityRest {
 
+	Logger logger = LoggerFactory.getLogger(CityRestImpl.class);
+	
 	/** The i city service. */
 	@Autowired
 	private ICityService iCityService;
 
 	/**
-	 * Gets the citys.
+	 * Gets the cites.
 	 *
-	 * @return the citys
+	 * @return the cites
 	 * @throws ParseDataException the parse data exception
 	 */
 	@Override
-	public ResponseEntity getCitys() throws ParseDataException {
-		return new ResponseEntity(iCityService.getCitys(), HttpStatus.OK);
+	public ResponseEntity getCities() throws ParseDataException {
+		logger.info(
+				"In Methhod : getCitys, Calling service : iCityService.getCities");
+		
+		return new ResponseEntity(iCityService.getCities(), HttpStatus.OK);
 	}
 }

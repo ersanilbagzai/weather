@@ -17,9 +17,9 @@ import io.swagger.annotations.ApiResponses;
 public interface IcityRest {
 
 	/**
-	 * Gets the citys.
+	 * Gets the cites.
 	 *
-	 * @return the citys
+	 * @return the cites
 	 * @throws ParseDataException the parse data exception
 	 */
 	@ApiOperation(value = "Get City List", response = String.class, responseContainer = "List")
@@ -27,6 +27,6 @@ public interface IcityRest {
 			@ApiResponse(code = 403, message = "Forbidden"), @ApiResponse(code = 404, message = "Not Found"),
 			@ApiResponse(code = 500, message = "Internal Server Error") })
 	@GetMapping(path = "detail")
-	public ResponseEntity<Object> getCitys() throws ParseDataException;
+	public ResponseEntity<Object> getCities() throws ParseDataException;
 
 }

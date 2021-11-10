@@ -15,5 +15,5 @@ public interface ICityService {
 	 * @return the citys
 	 * @throws ParseDataException the parse data exception
 	 */
-	public List<String> getCitys() throws ParseDataException;
+	public List<String> getCities() throws ParseDataException;
 }
